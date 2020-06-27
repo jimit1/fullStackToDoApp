@@ -37,13 +37,13 @@ router.delete("/api/delete/:id", (req, res) => {
 });
 
 //Route to edit a todo
-router.patch("/api/edit/", (req, res) => {
+router.patch("/api", (req, res) => {
   editTodo({
     todoText: req.body.todoText,
     todoId: parseInt(req.body.todoId),
-    todoCompleted: req.body.completed === "false" ? false : true,
+    todoCompleted: req.body.todoCompleted === "false" ? false : true,
   })
-    .then((data) => res.json(data))
+    .then((editResponse) => res.json(editResponse))
     .catch((err) => res.json(err));
 });
 

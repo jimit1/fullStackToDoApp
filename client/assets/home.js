@@ -1,7 +1,7 @@
-$(document).ready(function () {});
-
-getTodos().then((res) => {
-  renderTodos(res);
+$(document).ready(function () {
+  getTodos().then((res) => {
+    renderTodos(res);
+  });
 });
 
 const getTodos = () => {
@@ -10,9 +10,7 @@ const getTodos = () => {
       type: "GET",
       url: "/api",
     })
-      .then((allTodo) => {
-        resolve(allTodo);
-      })
+      .then((allTodo) => resolve(allTodo))
       .catch((err) => reject(err));
   });
 };
@@ -44,18 +42,17 @@ const renderTodos = (arr) => {
   });
 };
 
-$(document).on("click", ".btnUpdate", () => {
-  const todoID = $(this).attr("data-id");
-  window.location.href = `/edit?id=${todoID}`;
+$(document).on("click", ".btnUpdate", function () {
+  const todoId = $(this).attr("data-id");
+  window.location.href = `/edit?id=${todoId}`;
 });
 
-$(document).on("click", ".btnDelete", () => {
-  const todoID = $(this).attr("data-id");
-  window.location.href = `/delete?id=${todoID}`;
+$(document).on("click", ".btnDelete", function () {
+  const todoId = $(this).attr("data-id");
+  window.location.href = `/delete?id=${todoId}`;
 });
 
-$("#button-addon2").on("click", (e) => {
-  e.preventDefault();
+$("#button-addon2").on("click", () => {
   const text = $(".form-control").val();
   $(".form-control").val("");
   $.ajax({
@@ -64,6 +61,8 @@ $("#button-addon2").on("click", (e) => {
     data: { text: text },
   }).then((res) => {
     console.log(res.msg);
-    // window.location.href = "/";
+    getTodos().then((res) => {
+      renderTodos(res);
+    });
   });
 });
