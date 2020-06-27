@@ -1,12 +1,21 @@
-$(document).ready(function () {
-  $.ajax({
-    type: "GET",
-    url: "/api",
-  }).then((allTodo) => {
-    console.log(allTodo);
-    renderTodos(allTodo);
-  });
+$(document).ready(function () {});
+
+getTodos().then((res) => {
+  renderTodos(res);
 });
+
+const getTodos = () => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: "GET",
+      url: "/api",
+    })
+      .then((allTodo) => {
+        resolve(allTodo);
+      })
+      .catch((err) => reject(err));
+  });
+};
 
 const renderTodos = (arr) => {
   $(".card-container").html("");
@@ -35,12 +44,26 @@ const renderTodos = (arr) => {
   });
 };
 
-$(document).on("click", ".btnUpdate", function () {
+$(document).on("click", ".btnUpdate", () => {
   const todoID = $(this).attr("data-id");
   window.location.href = `/edit?id=${todoID}`;
 });
 
-$(document).on("click", ".btnDelete", function () {
+$(document).on("click", ".btnDelete", () => {
   const todoID = $(this).attr("data-id");
   window.location.href = `/delete?id=${todoID}`;
+});
+
+$("#button-addon2").on("click", (e) => {
+  e.preventDefault();
+  const text = $(".form-control").val();
+  $(".form-control").val("");
+  $.ajax({
+    type: "POST",
+    url: "/api",
+    data: { text: text },
+  }).then((res) => {
+    console.log(res.msg);
+    // window.location.href = "/";
+  });
 });
